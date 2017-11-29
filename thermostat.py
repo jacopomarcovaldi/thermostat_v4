@@ -909,7 +909,7 @@ if telegramSend == 1:
                 bot.sendMessage(chat_id, test_ip)
             elif command == "/time":
                 bot.sendMessage(chat_id, str(datetime.datetime.now().strftime("%H:%M -- %d/%m/%Y")))
-            elif command[:8] == "/setTemp":
+            elif command[:8] == "/settemp":
                 tempe_set = command[command.index(":")+1:]
                 #print str(tempe_set),str(setTemp)
                 settaTemp(float(tempe_set))
@@ -919,24 +919,24 @@ if telegramSend == 1:
             elif command == "/help":
                 risposta = "/ip : leggi ip Thermostat \n/time : leggi ora Thermostat \n/stato : leggi lo stato di Thermostat \n/setTemp:20.0 : setta Temperatura \n/Inverno : setta Sistema per inverno \n/Estate : setta Sistema per Estate \n/Manuale : prima settare Estate o Inverno quindi setta Il Funzionamento Manuale \n/Off : Setta NoIce \n/help : leggi i comandi possibili"
                 bot.sendMessage(chat_id,risposta)
-            elif command == "/Inverno":
+            elif command == "/inverno":
                 setControlState(heatControl, "down")
                 holdControl.state="normal"
                 change_system_settings()
                 bot.sendMessage(chat_id,"Settato Inverno")
                 bot.sendMessage(chat_id, test_ip)
-            elif command == "/Estate":
+            elif command == "/estate":
                 setControlState(coolControl, "down")
                 holdControl.state="normal"
                 change_system_settings()
                 bot.sendMessage(chat_id,"Settato Estate")
                 bot.sendMessage(chat_id, test_ip)
-            elif command == "/Manuale":
+            elif command == "/manuale":
                 setControlState(holdControl, "down")
                 change_system_settings()
                 bot.sendMessage(chat_id,"Settato Manuale")
                 bot.sendMessage(chat_id, test_ip)
-            elif command =="/Off":
+            elif command =="/off":
                 holdControl.state="normal"
                 coolControl.state="normal"
                 setControlState(heatControl, "normal")
