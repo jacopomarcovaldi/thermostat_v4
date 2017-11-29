@@ -887,62 +887,66 @@ def testDhtLan(c, comando):
 #########################################################################
 
 if telegramSend == 1:
+    id_a = [11111111,2222222,3333333,4444444,5555555]
     bot = telepot.Bot(settings.get("telegram")["token"])
     with thermostatLock:
         def handle(msg):
             chat_id = msg['chat']['id']
             command = msg['text']
-            #print 'Got command: %s' % command
-            if command == "/ip":
-                f = get("https://api.ipify.org").text
-                look_ip = str(f)
-                if cherrypy.server.socket_port == 443:
-                    bot.sendMessage(chat_id, "Da Internet Thermostat su: https://" + look_ip + "/")
-                else:
-                    bot.sendMessage(chat_id, "Da Internet Thermostat su: http://" + look_ip + "/")
-                ip_int = str(get_ip_address())
-                if cherrypy.server.socket_port == 443:
-                    bot.sendMessage(chat_id, "Da Lan Thermostat su: https://" + ip_int + "/")
-                else:
-                    bot.sendMessage(chat_id, "Da Lan Thermostat su: http://" + ip_int + "/")    
-            elif command == "/stato":
-                bot.sendMessage(chat_id, test_ip)
-            elif command == "/time":
-                bot.sendMessage(chat_id, str(datetime.datetime.now().strftime("%H:%M -- %d/%m/%Y")))
-            elif command[:8] == "/setTemp":
-                tempe_set = command[command.index(":")+1:]
-                #print str(tempe_set),str(setTemp)
-                settaTemp(float(tempe_set))
-                change_system_settings()
-                bot.sendMessage(chat_id, "Set Temp : "+str(setTemp))
-                bot.sendMessage(chat_id, test_ip)
-            elif command == "/help":
-                risposta = "/ip : leggi ip Thermostat \n/time : leggi ora Thermostat \n/stato : leggi lo stato di Thermostat \n/setTemp:20.0 : setta Temperatura \n/Inverno : setta Sistema per inverno \n/Estate : setta Sistema per Estate \n/Manuale : prima settare Estate o Inverno quindi setta Il Funzionamento Manuale \n/Off : Setta NoIce \n/help : leggi i comandi possibili"
-                bot.sendMessage(chat_id,risposta)
-            elif command == "/Inverno":
-                setControlState(heatControl, "down")
-                holdControl.state="normal"
-                change_system_settings()
-                bot.sendMessage(chat_id,"Settato Inverno")
-                bot.sendMessage(chat_id, test_ip)
-            elif command == "/Estate":
-                setControlState(coolControl, "down")
-                holdControl.state="normal"
-                change_system_settings()
-                bot.sendMessage(chat_id,"Settato Estate")
-                bot.sendMessage(chat_id, test_ip)
-            elif command == "/Manuale":
-                setControlState(holdControl, "down")
-                change_system_settings()
-                bot.sendMessage(chat_id,"Settato Manuale")
-                bot.sendMessage(chat_id, test_ip)
-            elif command =="/Off":
-                holdControl.state="normal"
-                coolControl.state="normal"
-                setControlState(heatControl, "normal")
-                change_system_settings()
-                bot.sendMessage(chat_id, test_ip)
-            
+	    sender = msg['from']['id']
+	    if sender in id_a:
+		    #print 'Got command: %s' % command
+		    if command == "/ip":
+			f = get("https://api.ipify.org").text
+			look_ip = str(f)
+			if cherrypy.server.socket_port == 443:
+			    bot.sendMessage(chat_id, "Da Internet Thermostat su: https://" + look_ip + "/")
+			else:
+			    bot.sendMessage(chat_id, "Da Internet Thermostat su: http://" + look_ip + "/")
+			ip_int = str(get_ip_address())
+			if cherrypy.server.socket_port == 443:
+			    bot.sendMessage(chat_id, "Da Lan Thermostat su: https://" + ip_int + "/")
+			else:
+			    bot.sendMessage(chat_id, "Da Lan Thermostat su: http://" + ip_int + "/")    
+		    elif command == "/stato":
+			bot.sendMessage(chat_id, test_ip)
+		    elif command == "/time":
+			bot.sendMessage(chat_id, str(datetime.datetime.now().strftime("%H:%M -- %d/%m/%Y")))
+		    elif command[:8] == "/setTemp":
+			tempe_set = command[command.index(":")+1:]
+			#print str(tempe_set),str(setTemp)
+			settaTemp(float(tempe_set))
+			change_system_settings()
+			bot.sendMessage(chat_id, "Set Temp : "+str(setTemp))
+			bot.sendMessage(chat_id, test_ip)
+		    elif command == "/help":
+			risposta = "/ip : leggi ip Thermostat \n/time : leggi ora Thermostat \n/stato : leggi lo stato di Thermostat \n/setTemp:20.0 : setta Temperatura \n/Inverno : setta Sistema per inverno \n/Estate : setta Sistema per Estate \n/Manuale : prima settare Estate o Inverno quindi setta Il Funzionamento Manuale \n/Off : Setta NoIce \n/help : leggi i comandi possibili"
+			bot.sendMessage(chat_id,risposta)
+		    elif command == "/Inverno":
+			setControlState(heatControl, "down")
+			holdControl.state="normal"
+			change_system_settings()
+			bot.sendMessage(chat_id,"Settato Inverno")
+			bot.sendMessage(chat_id, test_ip)
+		    elif command == "/Estate":
+			setControlState(coolControl, "down")
+			holdControl.state="normal"
+			change_system_settings()
+			bot.sendMessage(chat_id,"Settato Estate")
+			bot.sendMessage(chat_id, test_ip)
+		    elif command == "/Manuale":
+			setControlState(holdControl, "down")
+			change_system_settings()
+			bot.sendMessage(chat_id,"Settato Manuale")
+			bot.sendMessage(chat_id, test_ip)
+		    elif command =="/Off":
+			holdControl.state="normal"
+			coolControl.state="normal"
+			setControlState(heatControl, "normal")
+			change_system_settings()
+			bot.sendMessage(chat_id, test_ip)
+	     else:
+		bot.sendMessage(chat_id,"Non sei autorizzato ad utilizzare questo bot")
 #######################################################
 
 ##############################################################################
